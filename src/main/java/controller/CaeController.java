@@ -4,7 +4,7 @@ import dominio.*;
 import estructuras.*;
 import java.util.Scanner;
 
-public class Caecontroller {
+public class CaeController {
 
     private static final Scanner sc = new Scanner(System.in);
 
