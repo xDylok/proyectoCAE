@@ -70,10 +70,10 @@ Durante el desarrollo de las clases genéricas y las estructuras de datos, se re
 **Autores:** 
   - Fernando Patiño (Fede-11)
   - Francis Valdiviezo (FrancisValdiviezoUNL)
-  - Jostin Vazquez (xDylok)
+  - Jostin Vasquez (xDylok)
   - Gyna Yupanqui (Gyna-22)
   - Ismael Gonzalez (IsmaelGonz)
 
-**Versión:** 1.0  
+**Versión:** 1.1  
 **Fecha:** 21 - 10 - 2025  
 **Proyecto académico:** Centro de Atención al Estudiante (CAE)
