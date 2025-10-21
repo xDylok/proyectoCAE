@@ -9,28 +9,41 @@ public class ListaEnlazadaSimple<T> {
         nuevoNodo.siguiente = cabeza;
         cabeza = nuevoNodo;
     }
+    public void insertarAlFinal(T dato) {
+        Nodo<T> nuevoNodo = new Nodo<>(dato);
+        if (cabeza == null) {
+            cabeza = nuevoNodo;
+        } else {
+            Nodo<T> actual = cabeza;
+            while (actual.siguiente != null) {
+                actual = actual.siguiente;
+            }
+            actual.siguiente = nuevoNodo;
+        }
+    }
 
     // elimina la primera vez que encuentra un dato especifico
     public boolean eliminaPrimeraCoincidencia(T dato) {
-        if (cabeza != null) return false;
+        if (cabeza == null) return false; // lista vacía
 
-        // si el dato a eliminar es el primero
-        if(cabeza.dato.equals(dato)){
+        if (cabeza.dato.equals(dato)) {
             cabeza = cabeza.siguiente;
-            return  true;
+            return true;
         }
 
-        // el nodo esta en otra posicion
         Nodo<T> actual = cabeza;
         while (actual.siguiente != null && !actual.siguiente.dato.equals(dato)) {
             actual = actual.siguiente;
         }
-        if (actual.siguiente == null) {
-            actual.siguiente = actual.siguiente.siguiente; //salta el nodo a eliminar
+
+        if (actual.siguiente != null) {
+            actual.siguiente = actual.siguiente.siguiente;
             return true;
         }
-        return false; // no encontro el dato
+
+        return false;
     }
+
 
     // muestra los elementos de la lsita
     public void mostrar(){
@@ -44,6 +57,13 @@ public class ListaEnlazadaSimple<T> {
             System.out.println(" " + i++ + " - " + actual.dato.toString());
             actual = actual.siguiente;
         }
+    }
+    public Nodo<T> getCabeza() {
+        return cabeza;
+    }
+
+    public boolean estaVacia() {
+        return cabeza == null;
     }
 
 }

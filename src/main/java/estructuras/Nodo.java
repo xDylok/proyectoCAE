@@ -6,6 +6,6 @@ public class Nodo<T> {
 
     public Nodo(T dato) {
         this.dato = dato;
-        this.siguiente = siguiente;
+        this.siguiente = null;
     }
 }

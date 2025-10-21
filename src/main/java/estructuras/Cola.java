@@ -29,4 +29,18 @@ public class Cola<T> {
         }
         return dato;
     }
+    public void imprimir() {
+        if (estaVacia()) {
+            System.out.println("(cola vacía)");
+            return;
+        }
+
+        Nodo<T> actual = frente;
+        System.out.println("Contenido de la cola:");
+        int i = 1;
+        while (actual != null) {
+            System.out.println(" " + i++ + " - " + actual.dato.toString());
+            actual = actual.siguiente;
+        }
+    }
 }

@@ -18,8 +18,9 @@ public class Nota {
 
     @Override
     public String toString() {
-        return "[" + fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:")) + "] ";
+        return "[" + fecha.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")) + "] " + texto;
     }
+
 
     @Override
     public boolean equals(Object obj) {
