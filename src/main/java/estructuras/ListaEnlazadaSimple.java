@@ -4,23 +4,13 @@ public class ListaEnlazadaSimple<T> {
     private Nodo<T> cabeza;
 
     // inserta un nuevo elemento al inicio de la lista
+
     public void insertarAlInicio(T dato) {
         Nodo<T> nuevoNodo = new Nodo<>(dato);
         nuevoNodo.siguiente = cabeza;
         cabeza = nuevoNodo;
     }
-    public void insertarAlFinal(T dato) {
-        Nodo<T> nuevoNodo = new Nodo<>(dato);
-        if (cabeza == null) {
-            cabeza = nuevoNodo;
-        } else {
-            Nodo<T> actual = cabeza;
-            while (actual.siguiente != null) {
-                actual = actual.siguiente;
-            }
-            actual.siguiente = nuevoNodo;
-        }
-    }
+
 
     // elimina la primera vez que encuentra un dato especifico
     public boolean eliminaPrimeraCoincidencia(T dato) {
@@ -43,7 +33,6 @@ public class ListaEnlazadaSimple<T> {
 
         return false;
     }
-
 
     // muestra los elementos de la lsita
     public void mostrar(){

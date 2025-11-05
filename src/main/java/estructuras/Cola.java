@@ -1,5 +1,7 @@
 package estructuras;
 
+import dominio.EstadoTicket;
+
 public class Cola<T> {
     private Nodo<T> frente;
     private Nodo<T> fin;
@@ -43,4 +45,5 @@ public class Cola<T> {
             actual = actual.siguiente;
         }
     }
+
 }

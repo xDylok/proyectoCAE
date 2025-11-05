@@ -4,33 +4,65 @@ import dominio.*;
 import estructuras.*;
 import java.util.Scanner;
 
-public class CaeController {
+public class Caecontroller {
 
-    private static final Scanner sc = new Scanner(System.in);
+    private static Scanner sc = new Scanner(System.in);
 
     public static final Cola<Ticket> ticketsEspera = new Cola<>();
     private static final ListaEnlazadaSimple<Ticket>  ticketsFinalizados = new ListaEnlazadaSimple<>();
 
     public static Ticket ticketAtencion;
+    public static Ticket ticketEspera;
     private static Pila<Accion> undoStack = new Pila<>();
     private static Pila<Accion> redoStack = new Pila<>();
 
-    private static Ticket crearTicket() {
-        System.out.print("Agrega el nombre del estudiante: ");
-        String estudiante = sc.nextLine();
-        System.out.print("Agrega el nro del tramite: ");
-        String tramite = sc.nextLine();
 
-        return new Ticket(estudiante, tramite);
-    }
+    /**
+     * Metodo para Agregar el ticket creado a la cola
+     */
+    public static void agregarTicket() throws Exception{
 
-    public static void agregarTicket() {
-        Ticket nuevo = crearTicket();
+        Scanner sc = new Scanner(System.in);
+        System.out.println("Seleccione el proceso a realizar: ");
+        System.out.println("1. Homologacion");
+        System.out.println("2. Consulta");
+        System.out.println("3. Info");
+        System.out.println("4. Matricula");
+        System.out.println("Ingrese el numero del proceso a realizar: ");
+        int opcion = sc.nextInt();
+
+
+        Procesos proceso;
+        switch (opcion) {
+            case 1:
+                proceso = Procesos.HOMOLOGACION;
+                break;
+
+            case 2:
+                proceso = Procesos.CONSULTA;
+                break;
+            case 3:
+                proceso = Procesos.INFO;
+                break;
+            case 4:
+                proceso = Procesos.MATRICULA;
+                break;
+            default:
+                throw new Exception(" Numero no valido: ");
+
+        }
+        sc.nextLine();
+
+        Ticket nuevo = new Ticket(proceso);
         ticketsEspera.enqueue(nuevo);
         System.out.println("Ticket agregado a la cola: " + nuevo);
     }
 
-     public static void atenderSiguienteTicket() {
+    /***
+     * Metodo para realizar la atencion de un ticket en espera
+     */
+    public static void atenderSiguienteTicket() throws Exception {
+        Scanner sc = new Scanner(System.in);
         if (ticketAtencion != null) {
             System.out.println("Ya hay un ticket en atención: " + ticketAtencion);
             return;
@@ -38,10 +70,32 @@ public class CaeController {
 
         ticketAtencion = ticketsEspera.dequeue();
 
+        System.out.println("Ingrese e nombre del usuario");
+        String nombre = sc.nextLine();
+        System.out.println("Ingrese el apellido del usuario");
+        String apellido = sc.nextLine();
+
+        //Para verificar si mi cedula son numeros caso contrario error
+        boolean cedulavalida = false;
+        int cedula = 0;
+        while (!cedulavalida) {
+            try {
+                System.out.println("Ingrese el cedula del usuario");
+                cedula = sc.nextInt();
+                cedulavalida = true;
+            } catch (Exception e) {
+                System.out.println("Solo se aceptan numeros");
+                sc.nextLine();
+            }
+        }
+
+
+        Persona persona = new Persona(nombre, apellido, cedula);
+        ticketAtencion.setPersona(persona);
+
         if (ticketAtencion == null) {
             System.out.println("No hay tickets en espera.");
             return;
-
         }
 
         ticketAtencion.setEstado(EstadoTicket.EN_ATENCION);
@@ -51,9 +105,11 @@ public class CaeController {
         System.out.println("Atendiendo ahora el " + ticketAtencion);
     }
 
-    //Opciones submenu de gestion
 
-     public static void agregarNota() {
+    /***
+     * Metodo para agregar notas al ticket en atencion
+     */
+    public static void agregarNota() {
         System.out.print("Escriba la nota: ");
         String textoNota = sc.nextLine();
         Nota nuevaNota = new Nota(textoNota);
@@ -70,8 +126,10 @@ public class CaeController {
     }
 
 
-
-public static void deshacerAccion() {
+    /***
+     * Metodo para deshacer acciones como notas del ticket que esta siendo atendido
+     */
+    public static void deshacerAccion() {
         Accion accion = undoStack.pop();
         if (accion == null) {
             System.out.println("No hay acciones para deshacer");
@@ -91,6 +149,9 @@ public static void deshacerAccion() {
         redoStack.push(accion);
     }
 
+    /***
+     * Metodo para recuperar la accion borrada en el ticket de atencion
+     */
     public static void rehacerAccion() {
         Accion accion = redoStack.pop();
         if (accion == null) {
@@ -111,6 +172,9 @@ public static void deshacerAccion() {
         undoStack.push(accion);
     }
 
+    /***
+     * Metodo utilizado para realizar la finalizacion de la atencion del ticket y limpiar el ticketAtencion
+     */
     public static void finalizarAtencion() {
         if (ticketAtencion.getEstado() != EstadoTicket.COMPLETADO && ticketAtencion.getEstado() != EstadoTicket.CANCELADO) {
             System.out.println("Advertencia: El ticket no esta en estado COMPLETADO o CANCELADO.");
@@ -129,10 +193,16 @@ public static void deshacerAccion() {
 
     //menu
 
+    /***
+     * Metodo que llama al metodo de imprimir de la cola
+     */
     public static void imprimirCola(){
         ticketsEspera.imprimir();
     }
 
+    /***
+     * Metodo que realiza la busqueda de la lista de los tickets finalizadoos
+     */
     public static void consultarHistorialFinalizados() {
         System.out.println("\n--- Historial de Tickets Finalizados ---");
 
@@ -146,7 +216,7 @@ public static void deshacerAccion() {
 
         while (actual != null) {
             Ticket t = actual.dato;
-            System.out.println("\n" + i++ + ") " + t);
+            System.out.println("\n" + i++ + ") " + t );
             System.out.println("   📋 Historial de notas:");
             t.getHistorialNotas().mostrar();
             actual = actual.siguiente;
@@ -155,13 +225,7 @@ public static void deshacerAccion() {
         System.out.println("------------------------------------------");
     }
 
-    private static int leerOpcion() {
-        try {
-            return Integer.parseInt(sc.nextLine());
-        } catch (NumberFormatException e) {
-            return -1;
-        }
-    }
+
 
 
 }

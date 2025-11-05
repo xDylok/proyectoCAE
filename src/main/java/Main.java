@@ -10,7 +10,7 @@ public class Main {
 
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
         int opcion;
         do {
@@ -18,7 +18,7 @@ public class Main {
             opcion = leerOpcion();
             switch (opcion) {
                 case 1:
-                    controlador.agregarTicket();
+                    controlador.agregarTicket() ;
                     break;
                 case 2:
                     controlador.atenderSiguienteTicket();
@@ -52,16 +52,21 @@ public class Main {
                             case 4:
                                 controlador.finalizarAtencion();
                                 if (controlador.ticketAtencion == null) {
-                                    opcion1 = 5;
+                                    opcion1 = 6;
                                     opcion = 4;
                                     System.out.println("Regresando al menu principal.......");
                                 }
+                                break;
+                            case 5:
+                                System.out.println("Volviendo al menu principal");
+                                opcion1 = 6;
+                                opcion = 4;
                                 break;
 
                             default:
                                 System.out.println("Opcion no valida");
                         }
-                    } while (opcion1 != 5);
+                    } while (opcion1 != 6);
                     break;
                 case 4:
                     controlador.imprimirCola();
@@ -80,9 +85,6 @@ public class Main {
             }
         } while (opcion != 6);
     }
-
-
-
 
     private static void mostrarMenuPrincipal() {
         System.out.println("\n--- Centro de Atencion al Estudiante (CAE) ---");
