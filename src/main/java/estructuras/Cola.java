@@ -31,14 +31,16 @@ public class Cola<T> {
         }
         return dato;
     }
-    public void imprimir() {
+    public void imprimir(String nombre_cola) {
         if (estaVacia()) {
+            System.out.println("Contenido de la cola "+nombre_cola+":");
             System.out.println("(cola vacía)");
+            System.out.println("---------------------------------------");
             return;
         }
 
         Nodo<T> actual = frente;
-        System.out.println("Contenido de la cola:");
+        System.out.println("Contenido de la cola "+nombre_cola+":");
         int i = 1;
         while (actual != null) {
             System.out.println(" " + i++ + " - " + actual.dato.toString());

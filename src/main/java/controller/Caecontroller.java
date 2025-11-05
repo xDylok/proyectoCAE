@@ -9,6 +9,7 @@ public class Caecontroller {
     private static Scanner sc = new Scanner(System.in);
 
     public static final Cola<Ticket> ticketsEspera = new Cola<>();
+    public static final Cola<Ticket> ticketsUrgente = new Cola<>();
     private static final ListaEnlazadaSimple<Ticket>  ticketsFinalizados = new ListaEnlazadaSimple<>();
 
     public static Ticket ticketAtencion;
@@ -53,9 +54,39 @@ public class Caecontroller {
         }
         sc.nextLine();
 
-        Ticket nuevo = new Ticket(proceso);
-        ticketsEspera.enqueue(nuevo);
-        System.out.println("Ticket agregado a la cola: " + nuevo);
+
+        boolean ticketUrgOpcion = false;
+
+        while (!ticketUrgOpcion) {
+            try {
+                System.out.println("Es un ticket urgente: ");
+                System.out.println("1. Si");
+                System.out.println("2. No");
+                int opcionurg = sc.nextInt();
+                switch (opcionurg) {
+                    case 1:
+                        Ticket nuevo_urg = new Ticket(proceso);
+                        nuevo_urg.setEstado(EstadoTicket.URGENTE);
+                        ticketsUrgente.enqueue(nuevo_urg);
+                        System.out.println("Ticket agregado a la cola: " + nuevo_urg);
+                        ticketUrgOpcion = true;
+                        break;
+                    case 2:
+                        Ticket nuevo = new Ticket(proceso);
+                        ticketsEspera.enqueue(nuevo);
+                        System.out.println("Ticket agregado a la cola: " + nuevo);
+                        ticketUrgOpcion = true;
+                        break;
+                }
+            } catch (Exception e) {
+                System.out.println("Solo se aceptan 1 y 2");
+                sc.nextLine();
+            }
+        }
+
+
+
+
     }
 
     /***
@@ -68,7 +99,13 @@ public class Caecontroller {
             return;
         }
 
-        ticketAtencion = ticketsEspera.dequeue();
+        if (!ticketsUrgente.estaVacia()){
+            ticketAtencion = ticketsUrgente.dequeue();
+        } else {
+            ticketAtencion = ticketsEspera.dequeue();
+        }
+
+
 
         System.out.println("Ingrese e nombre del usuario");
         String nombre = sc.nextLine();
@@ -197,7 +234,8 @@ public class Caecontroller {
      * Metodo que llama al metodo de imprimir de la cola
      */
     public static void imprimirCola(){
-        ticketsEspera.imprimir();
+        ticketsUrgente.imprimir("Urgente");
+        ticketsEspera.imprimir("General");
     }
 
     /***

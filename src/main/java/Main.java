@@ -58,9 +58,7 @@ public class Main {
                                 }
                                 break;
                             case 5:
-                                System.out.println("Volviendo al menu principal");
-                                opcion1 = 6;
-                                opcion = 4;
+                                controlador.agregarTicket() ;
                                 break;
 
                             default:
@@ -109,10 +107,18 @@ public class Main {
         System.out.println("2. Deshacer última acción (Undo)");
         System.out.println("3. Rehacer última acción (Redo)");
         System.out.println("4. Finalizar atención de este ticket");
+        System.out.println("=====================================");
+        System.out.println("5. Recibir nuevos tickets en espera");
+        System.out.println("=====================================");
         System.out.println("\n--- Historial de Notas ---");
         controlador.ticketAtencion.getHistorialNotas().mostrar();
         System.out.println("--------------------------");
         System.out.print("Seleccione una opción: ");
+
+        System.out.println("==================================================");
+        Caecontroller.imprimirCola();
+        System.out.println("==================================================");
+
     }
 
 
