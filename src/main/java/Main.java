@@ -22,8 +22,12 @@ public class Main {
                     break;
                 case 2:
                     controlador.atenderSiguienteTicket();
+
                     break;
                 case 3:
+                    controlador.atenderTicketPendiente();
+                    break;
+                case 4:
                     if (controlador.ticketAtencion == null){
                         controlador.atenderSiguienteTicket();
                         if (controlador.ticketsEspera.estaVacia()){
@@ -50,30 +54,38 @@ public class Main {
                                 controlador.rehacerAccion();
                                 break;
                             case 4:
-                                controlador.finalizarAtencion();
+                                controlador.guardarTicketPendiente();
                                 if (controlador.ticketAtencion == null) {
-                                    opcion1 = 6;
+                                    opcion1 = 7;
                                     opcion = 4;
                                     System.out.println("Regresando al menu principal.......");
                                 }
                                 break;
                             case 5:
+                                controlador.finalizarAtencion();
+                                if (controlador.ticketAtencion == null) {
+                                    opcion1 = 7;
+                                    opcion = 4;
+                                    System.out.println("Regresando al menu principal.......");
+                                }
+                                break;
+                            case 6:
                                 controlador.agregarTicket() ;
                                 break;
 
                             default:
                                 System.out.println("Opcion no valida");
                         }
-                    } while (opcion1 != 6);
+                    } while (opcion1 != 7);
                     break;
-                case 4:
+                case 5:
                     controlador.imprimirCola();
 
                     break;
-                case 5:
+                case 6:
                      controlador.consultarHistorialFinalizados();
 
-                case 6:
+                case 7:
                     System.out.println("Gracias por usar nuestro sistema de gestion de Tramites ......");
 
                     break;
@@ -81,17 +93,18 @@ public class Main {
                     System.out.println("Opcion no valida");
 
             }
-        } while (opcion != 6);
+        } while (opcion != 7);
     }
 
     private static void mostrarMenuPrincipal() {
         System.out.println("\n--- Centro de Atencion al Estudiante (CAE) ---");
         System.out.println("1. Recibir nuevo ticket de estudiante");
         System.out.println("2. Atender siguiente ticket en la cola");
-        System.out.println("3. Gestionar ticket en atencion actual");
-        System.out.println("4. Tickets en espera");
-        System.out.println("5. Consultar historial de un ticket finalizado");
-        System.out.println("6. Salir");
+        System.out.println("3. Atender ticket en pendiente");
+        System.out.println("4. Gestionar ticket en atencion actual");
+        System.out.println("5. Tickets en espera");
+        System.out.println("6. Consultar historial de un ticket finalizado");
+        System.out.println("7. Salir");
         System.out.println("-------------------------------------------------");
         if (controlador.ticketAtencion != null) {
             System.out.println("Atendiendo ahora: " + controlador.ticketAtencion);
@@ -102,22 +115,24 @@ public class Main {
     }
 
     private static void mostrarMenuGestion() {
-        System.out.println("\n--- Gestionando Ticket #" + controlador.ticketAtencion.getId() + " ---");
+        System.out.println("\n--- Gestionando Ticket #" + controlador.ticketAtencion.nroTicket + " ---");
         System.out.println("1. Agregar nota de observación");
         System.out.println("2. Deshacer última acción (Undo)");
         System.out.println("3. Rehacer última acción (Redo)");
-        System.out.println("4. Finalizar atención de este ticket");
+        System.out.println("4. Guardar ticket en pendiente");
+        System.out.println("5. Finalizar atención de este ticket");
         System.out.println("=====================================");
-        System.out.println("5. Recibir nuevos tickets en espera");
+        System.out.println("6. Recibir nuevos tickets en espera");
         System.out.println("=====================================");
         System.out.println("\n--- Historial de Notas ---");
         controlador.ticketAtencion.getHistorialNotas().mostrar();
-        System.out.println("--------------------------");
-        System.out.print("Seleccione una opción: ");
+        System.out.println("--------------------------------------");
 
-        System.out.println("==================================================");
+
+        System.out.println("\n==================================================");
         Caecontroller.imprimirCola();
         System.out.println("==================================================");
+        System.out.print("\nSeleccione una opción: ");
 
     }
 

@@ -10,6 +10,8 @@ public class Caecontroller {
 
     public static final Cola<Ticket> ticketsEspera = new Cola<>();
     public static final Cola<Ticket> ticketsUrgente = new Cola<>();
+    public static final Cola<Ticket> ticketsPendiente = new Cola<>();
+
     private static final ListaEnlazadaSimple<Ticket>  ticketsFinalizados = new ListaEnlazadaSimple<>();
 
     public static Ticket ticketAtencion;
@@ -62,6 +64,7 @@ public class Caecontroller {
                 System.out.println("Es un ticket urgente: ");
                 System.out.println("1. Si");
                 System.out.println("2. No");
+                System.out.print("Opcion: ");
                 int opcionurg = sc.nextInt();
                 switch (opcionurg) {
                     case 1:
@@ -83,11 +86,30 @@ public class Caecontroller {
                 sc.nextLine();
             }
         }
+    }
 
-
-
+    public static void guardarTicketPendiente(){
+        ticketAtencion.setEstado(EstadoTicket.PENDIENTE);
+        if (ticketAtencion.getEstado() == EstadoTicket.PENDIENTE) {
+            ticketsPendiente.enqueue(ticketAtencion);
+        }
+        ticketAtencion = null;
 
     }
+    public static void atenderTicketPendiente() {
+        if (ticketAtencion != null) {
+            System.out.println("Ya hay un ticket en atención: " + ticketAtencion);
+            return;
+        }
+        ticketAtencion = ticketsPendiente.dequeue();
+        if (ticketAtencion == null) {
+            System.out.println("No tiene un ticket en pendiente");
+            return;
+        }
+        ticketAtencion.setEstado(EstadoTicket.EN_ATENCION);
+
+    }
+
 
     /***
      * Metodo para realizar la atencion de un ticket en espera
@@ -106,40 +128,42 @@ public class Caecontroller {
         }
 
 
+            System.out.println("Ingrese el nombre del usuario");
+            String nombre = sc.nextLine();
+            System.out.println("Ingrese el apellido del usuario");
+            String apellido = sc.nextLine();
 
-        System.out.println("Ingrese e nombre del usuario");
-        String nombre = sc.nextLine();
-        System.out.println("Ingrese el apellido del usuario");
-        String apellido = sc.nextLine();
-
-        //Para verificar si mi cedula son numeros caso contrario error
-        boolean cedulavalida = false;
-        int cedula = 0;
-        while (!cedulavalida) {
-            try {
-                System.out.println("Ingrese el cedula del usuario");
-                cedula = sc.nextInt();
-                cedulavalida = true;
-            } catch (Exception e) {
-                System.out.println("Solo se aceptan numeros");
-                sc.nextLine();
+            //Para verificar si mi cedula son numeros caso contrario error
+            boolean cedulavalida = false;
+            int cedula = 0;
+            while (!cedulavalida) {
+                try {
+                    System.out.println("Ingrese el cedula del usuario");
+                    cedula = sc.nextInt();
+                    cedulavalida = true;
+                } catch (Exception e) {
+                    System.out.println("Solo se aceptan numeros");
+                    sc.nextLine();
+                }
             }
-        }
 
 
-        Persona persona = new Persona(nombre, apellido, cedula);
-        ticketAtencion.setPersona(persona);
+            Persona persona = new Persona(nombre, apellido, cedula);
+            ticketAtencion.setPersona(persona);
 
-        if (ticketAtencion == null) {
-            System.out.println("No hay tickets en espera.");
-            return;
-        }
+            if (ticketAtencion == null) {
+                System.out.println("No hay tickets en espera.");
+                return;
+            }
 
-        ticketAtencion.setEstado(EstadoTicket.EN_ATENCION);
-        undoStack = new Pila<>();
-        redoStack = new Pila<>();
+            ticketAtencion.setEstado(EstadoTicket.EN_ATENCION);
+            undoStack = new Pila<>();
+            redoStack = new Pila<>();
+
+
 
         System.out.println("Atendiendo ahora el " + ticketAtencion);
+
     }
 
 
@@ -236,6 +260,7 @@ public class Caecontroller {
     public static void imprimirCola(){
         ticketsUrgente.imprimir("Urgente");
         ticketsEspera.imprimir("General");
+        ticketsPendiente.imprimir("Pendiente");
     }
 
     /***

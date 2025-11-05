@@ -33,19 +33,22 @@ public class Cola<T> {
     }
     public void imprimir(String nombre_cola) {
         if (estaVacia()) {
-            System.out.println("Contenido de la cola "+nombre_cola+":");
-            System.out.println("(cola vacía)");
-            System.out.println("---------------------------------------");
+            System.out.println("\u001B[1mContenido de la cola "+nombre_cola+":\u001B[0m");
+            System.out.println("================================================");
+            System.out.println("\t\u001B[34mNo existe tickets "+nombre_cola+" en la cola\u001B[0m");
+            System.out.println("================================================\n");
             return;
         }
 
         Nodo<T> actual = frente;
-        System.out.println("Contenido de la cola "+nombre_cola+":");
+        System.out.println("\u001B[1mContenido de la cola "+nombre_cola+":\u001B[0m");
+        System.out.println("================================================");
         int i = 1;
         while (actual != null) {
-            System.out.println(" " + i++ + " - " + actual.dato.toString());
+            System.out.println("\t\u001B[34m " + i++ + " - " + actual.dato.toString()+"\u001B[0m");
             actual = actual.siguiente;
         }
+        System.out.println("================================================\n");
     }
 
 }
