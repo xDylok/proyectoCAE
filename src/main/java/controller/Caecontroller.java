@@ -11,11 +11,9 @@ public class Caecontroller {
     public static final Cola<Ticket> ticketsEspera = new Cola<>();
     public static final Cola<Ticket> ticketsUrgente = new Cola<>();
     public static final Cola<Ticket> ticketsPendiente = new Cola<>();
-
     private static final ListaEnlazadaSimple<Ticket>  ticketsFinalizados = new ListaEnlazadaSimple<>();
 
     public static Ticket ticketAtencion;
-    public static Ticket ticketEspera;
     private static Pila<Accion> undoStack = new Pila<>();
     private static Pila<Accion> redoStack = new Pila<>();
 
@@ -26,35 +24,44 @@ public class Caecontroller {
     public static void agregarTicket() throws Exception{
 
         Scanner sc = new Scanner(System.in);
-        System.out.println("Seleccione el proceso a realizar: ");
-        System.out.println("1. Homologacion");
-        System.out.println("2. Consulta");
-        System.out.println("3. Info");
-        System.out.println("4. Matricula");
-        System.out.println("Ingrese el numero del proceso a realizar: ");
-        int opcion = sc.nextInt();
+        Procesos proceso = null;
+        boolean valido = false;
+        while(!valido){
+            try {
+                System.out.println("Seleccione el proceso a realizar: ");
+                System.out.println("1. Homologacion");
+                System.out.println("2. Consulta");
+                System.out.println("3. Info");
+                System.out.println("4. Matricula");
+                System.out.println("Ingrese el numero del proceso a realizar: ");
+                int opcion = sc.nextInt();
 
-
-        Procesos proceso;
-        switch (opcion) {
-            case 1:
-                proceso = Procesos.HOMOLOGACION;
-                break;
-
-            case 2:
-                proceso = Procesos.CONSULTA;
-                break;
-            case 3:
-                proceso = Procesos.INFO;
-                break;
-            case 4:
-                proceso = Procesos.MATRICULA;
-                break;
-            default:
-                throw new Exception(" Numero no valido: ");
-
+                switch (opcion){
+                    case 1:
+                        proceso = Procesos.HOMOLOGACION;
+                        valido = true;
+                        break;
+                    case 2:
+                        proceso = Procesos.CONSULTA;
+                        valido = true;
+                        break;
+                    case 3:
+                        proceso = Procesos.INFO;
+                        valido = true;
+                        break;
+                    case 4:
+                        proceso = Procesos.MATRICULA;
+                        valido = true;
+                        break;
+                    default:
+                        System.out.println("Solo se aceptan opcion de 1 a 4");
+                }
+            }catch (Exception e){
+                System.out.println("La opcion no es valida");
+                sc.nextLine();
+            }
         }
-        sc.nextLine();
+
 
 
         boolean ticketUrgOpcion = false;
@@ -111,7 +118,7 @@ public class Caecontroller {
     }
 
 
-    /***
+    /*
      * Metodo para realizar la atencion de un ticket en espera
      */
     public static void atenderSiguienteTicket() throws Exception {
@@ -128,37 +135,43 @@ public class Caecontroller {
         }
 
 
-            System.out.println("Ingrese el nombre del usuario");
-            String nombre = sc.nextLine();
-            System.out.println("Ingrese el apellido del usuario");
-            String apellido = sc.nextLine();
+        System.out.println("Ingrese el nombre del usuario");
+        String nombre = sc.nextLine();
+        System.out.println("Ingrese el apellido del usuario");
+        String apellido = sc.nextLine();
 
-            //Para verificar si mi cedula son numeros caso contrario error
-            boolean cedulavalida = false;
-            int cedula = 0;
-            while (!cedulavalida) {
-                try {
-                    System.out.println("Ingrese el cedula del usuario");
-                    cedula = sc.nextInt();
+        //Para verificar si mi cedula son numeros caso contrario error
+        boolean cedulavalida = false;
+        int cedula = 0;
+        while (!cedulavalida) {
+            try {
+                System.out.println("Ingrese el cedula del usuario");
+                cedula = sc.nextInt();
+
+                int digitos = String.valueOf(cedula).length();
+                if (digitos  == 10) {
                     cedulavalida = true;
-                } catch (Exception e) {
-                    System.out.println("Solo se aceptan numeros");
-                    sc.nextLine();
+                } else {
+                    System.out.println("Debe tener 10 digitos");
                 }
+
+            } catch (Exception e) {
+                System.out.println("Solo se aceptan numeros");
+                sc.nextLine();
             }
+        }
 
+        Persona persona = new Persona(nombre, apellido, cedula);
+        ticketAtencion.setPersona(persona);
 
-            Persona persona = new Persona(nombre, apellido, cedula);
-            ticketAtencion.setPersona(persona);
+        if (ticketAtencion == null) {
+            System.out.println("No hay tickets en espera.");
+            return;
+        }
 
-            if (ticketAtencion == null) {
-                System.out.println("No hay tickets en espera.");
-                return;
-            }
-
-            ticketAtencion.setEstado(EstadoTicket.EN_ATENCION);
-            undoStack = new Pila<>();
-            redoStack = new Pila<>();
+        ticketAtencion.setEstado(EstadoTicket.EN_ATENCION);
+        undoStack = new Pila<>();
+        redoStack = new Pila<>();
 
 
 
@@ -167,7 +180,7 @@ public class Caecontroller {
     }
 
 
-    /***
+    /*
      * Metodo para agregar notas al ticket en atencion
      */
     public static void agregarNota() {
@@ -187,7 +200,7 @@ public class Caecontroller {
     }
 
 
-    /***
+    /*
      * Metodo para deshacer acciones como notas del ticket que esta siendo atendido
      */
     public static void deshacerAccion() {
@@ -210,7 +223,7 @@ public class Caecontroller {
         redoStack.push(accion);
     }
 
-    /***
+    /*
      * Metodo para recuperar la accion borrada en el ticket de atencion
      */
     public static void rehacerAccion() {
@@ -233,7 +246,7 @@ public class Caecontroller {
         undoStack.push(accion);
     }
 
-    /***
+    /*
      * Metodo utilizado para realizar la finalizacion de la atencion del ticket y limpiar el ticketAtencion
      */
     public static void finalizarAtencion() {
@@ -254,7 +267,7 @@ public class Caecontroller {
 
     //menu
 
-    /***
+    /*
      * Metodo que llama al metodo de imprimir de la cola
      */
     public static void imprimirCola(){
@@ -263,7 +276,7 @@ public class Caecontroller {
         ticketsPendiente.imprimir("Pendiente");
     }
 
-    /***
+    /*
      * Metodo que realiza la busqueda de la lista de los tickets finalizadoos
      */
     public static void consultarHistorialFinalizados() {
@@ -287,8 +300,5 @@ public class Caecontroller {
 
         System.out.println("------------------------------------------");
     }
-
-
-
 
 }
