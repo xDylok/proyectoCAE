@@ -2,6 +2,9 @@ package estructuras;
 
 import dominio.EstadoTicket;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Cola<T> {
     private Nodo<T> frente;
     private Nodo<T> fin;
@@ -50,5 +53,17 @@ public class Cola<T> {
         }
         System.out.println("================================================\n");
     }
+    public List<T> toList() {
+        List<T> lista = new ArrayList<>();
+        Nodo<T> actual = frente;
+        while (actual != null) {
+            lista.add(actual.dato);
+            actual = actual.siguiente;
+        }
+        return lista;
+    }
 
+    public Nodo<T> getFrente() {
+        return frente;
+    }
 }

@@ -1,0 +1,47 @@
+=== COLA URGENTES ===
+Ticket #9
+Proceso=HOMOLOGACION
+Estado=URGENTE
+NroTicket=H0002
+Notas:
+ENDTICKET
+
+Ticket #10
+Proceso=CONSULTA
+Estado=URGENTE
+NroTicket=C0001
+Notas:
+ENDTICKET
+
+Ticket #11
+Proceso=INFO
+Estado=URGENTE
+NroTicket=I0007
+Notas:
+ENDTICKET
+
+Ticket #12
+Proceso=HOMOLOGACION
+Estado=URGENTE
+NroTicket=H0003
+Notas:
+ENDTICKET
+
+
+=== COLA NORMALES ===
+Ticket #13
+Proceso=CONSULTA
+Estado=EN_COLA
+NroTicket=C0002
+Notas:
+ENDTICKET
+
+Ticket #14
+Proceso=HOMOLOGACION
+Estado=EN_COLA
+NroTicket=H0004
+Notas:
+ENDTICKET
+
+
+=== COLA PENDIENTES ===

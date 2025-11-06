@@ -1,0 +1,44 @@
+Ticket #8
+Proceso=HOMOLOGACION
+Estado=COMPLETADO
+NroTicket=H0001
+Persona=Fernando,Pat,1105661043
+Notas:
+  - Cambio de estado: EN_ATENCION → COMPLETADO
+  - hola
+  - Cambio de estado: EN_COLA → EN_ATENCION
+ENDTICKET
+
+Ticket #6
+Proceso=INFO
+Estado=COMPLETADO
+NroTicket=C0001
+Persona=dsds,sdd,1401215312
+Notas:
+  - Cambio de estado: EN_COLA → EN_ATENCION
+  - sddsd
+  - Cambio de estado: EN_ATENCION → COMPLETADO
+ENDTICKET
+
+Ticket #4
+Proceso=INFO
+Estado=COMPLETADO
+NroTicket=I0003
+Persona=frfr,ssdsd,1234567891
+Notas:
+  - Cambio de estado: EN_COLA → EN_ATENCION
+  - dsdssdsd
+  - Cambio de estado: EN_ATENCION → COMPLETADO
+ENDTICKET
+
+Ticket #2
+Proceso=MATRICULA
+Estado=COMPLETADO
+NroTicket=M0001
+Persona=sdsds,sdasdasd,1234567896
+Notas:
+  - Cambio de estado: URGENTE → EN_ATENCION
+  - sdsd
+  - Cambio de estado: EN_ATENCION → COMPLETADO
+ENDTICKET
+

@@ -1,5 +1,8 @@
 package estructuras;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ListaEnlazadaSimple<T> {
     private Nodo<T> cabeza;
 
@@ -46,6 +49,15 @@ public class ListaEnlazadaSimple<T> {
             System.out.println(" " + i++ + " - " + actual.dato.toString());
             actual = actual.siguiente;
         }
+    }
+    public List<T> toList() {
+        List<T> lista = new ArrayList<>();
+        Nodo<T> actual = cabeza;
+        while (actual != null) {
+            lista.add(actual.dato);
+            actual = actual.siguiente;
+        }
+        return lista;
     }
     public Nodo<T> getCabeza() {
         return cabeza;
